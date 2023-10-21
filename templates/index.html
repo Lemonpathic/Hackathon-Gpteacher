@@ -152,24 +152,31 @@
  function rotateMessages() {
     const loader = document.querySelector('.loader');
     loader.style.display = 'block'
-    const messages = document.querySelectorAll('#loading-msgs h1');
-    let currentIndex = 0;
+    const messages = [
+            "This may take a little to process, please hang in there!",
+            "Scanning handwriting...",
+            "Little dinosaur robots are finishing your flashcards",
+            "Typo found... correcting",
+            "And! Almost there."
+        ];
 
-    function showNextMessage() {
-        messages[currentIndex].style.display = 'none'; // Hide the current message
-        currentIndex = (currentIndex + 1) % messages.length; // Move to the next message
-        messages[currentIndex].style.display = 'block'; // Show the next message
+        const messageElement = document.getElementById('message');
+        let currentIndex = 0;
+
+        function showNextMessage() {
+            messageElement.textContent = messages[currentIndex];
+            currentIndex = (currentIndex + 1) % messages.length;
+        }
+
+        showNextMessage(); // Show the first message immediately
+
+        const interval = setInterval(() => {
+            showNextMessage();
+        }, 6000); // Switch messages every 6 seconds
+
+        // Optionally, you can clear the interval after a certain number of cycles or when needed.
+        // clearInterval(interval);
     }
-
-    showNextMessage(); // Show the first message immediately
-
-    const interval = setInterval(() => {
-        showNextMessage();
-    }, 6000); // Switch messages every 6 seconds
-
-    // Optionally, you can clear the interval after a certain number of cycles or when needed.
-    // clearInterval(interval);
-}
 
   function edit(side){
     let editP = side.querySelector('p');

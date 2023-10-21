@@ -16,12 +16,20 @@
           <input id="fileInput" type="file" name="file" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx, .txt" style="display: none">
 
           <label for="fileInput" class="file-label">Choose File</label>
-          <input class="form-button" type="submit" value="Upload">
+          <input class="form-button" type="submit" value="Upload" onclick="rotateMessages()">
         </form>
             <div class="views">
                 <button class="viewButton" id="grid" onclick="switchView('grid')">Grid View</button>
                 <button class="viewButton" id="list" onclick="switchView('list')">List View</button>
             </div>
+            <div id="loading-msgs">
+                <h1>This may take a little to process please hang in there!</h1>
+                <h1>Scanning handwriting...</h1>
+                <h1>Little dinosaur robots are finishing your flashcards</h1>
+                <h1>Typo found... correcting</h1>
+                <h1>And! Almost there.</h1>
+            </div>
+            <div class="loader"></div>
             <div class="flashcards list-view">
                 {% for item in data %}
                 <div class="card">
@@ -141,6 +149,28 @@
 
 
   }
+  function rotateMessages() {
+    let loader = document.querySelector('.loader');
+    const messages = document.querySelectorAll("#loading-msgs h1");
+    let currentIndex = 0;
+    loader.style.display = 'block'
+    function displayNextMessage() {
+        // Hide the current message
+        messages[currentIndex].style.display = "none";
+
+        // Increment the index and loop back to 0 if necessary
+        currentIndex = (currentIndex + 1) % messages.length;
+
+        // Show the next message
+        messages[currentIndex].style.display = "block";
+    }
+
+    // Initially, show the first message
+    messages[currentIndex].style.display = "block";
+
+    // Set an interval to rotate messages every 6 seconds (6000 milliseconds)
+    setInterval(displayNextMessage, 6000);
+}
 
   function edit(side){
     let editP = side.querySelector('p');
@@ -188,6 +218,7 @@
     createSnowflakes();
     runSnowStorm();
   }
+
 </script>
 </body>
 </html>

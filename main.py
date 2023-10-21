@@ -1,6 +1,7 @@
 import os
 import io
 import openai
+from boto.s3.connection import S3Connection
 import re
 from flask import Flask, render_template, request
 from collections import namedtuple
@@ -11,7 +12,7 @@ UPLOAD_FOLDER = 'uploaded'
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-openai.api_key_path = 'appletv.txt'
+openai.api_key = S3Connection(os.environ['OPENAI_KEY'])
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'serviceaccounttoken.json'
 
 

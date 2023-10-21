@@ -7,6 +7,8 @@ from flask import Flask, render_template, request
 from collections import namedtuple
 from PIL import Image, ImageDraw, ImageFont
 from google.cloud import vision
+from werkzeug.utils import secure_filename
+import docx2txt
 
 UPLOAD_FOLDER = 'uploaded'
 app = Flask(__name__)
@@ -24,52 +26,59 @@ def init():
 
 @app.route('/upload', methods=['POST'])
 def index():
-    if 'image' in request.files:
-        image = request.files['image']
-        if image.filename != '':
-            try:
-                enum_images = list(enumerate(os.listdir(app.config['UPLOAD_FOLDER'])))
-                greatest = max(enum_images)
-                greatest_iteration = greatest[0]
-                image.save(os.path.join(app.config['UPLOAD_FOLDER'], 'image' + str(greatest_iteration)))
-            except:
-                image.save(os.path.join(app.config['UPLOAD_FOLDER'], 'image' + '0'))
+    if 'file' in request.files:
+        uploaded_file = request.files['file']
 
-    image_file_path = ('uploaded/' + "image" + str(greatest_iteration))
-    print(image_file_path)
+        if uploaded_file.filename != '':
+            # Use the secure_filename function to ensure the filename is safe
+            filename = secure_filename(uploaded_file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            uploaded_file.save(file_path)
 
-    client = vision.ImageAnnotatorClient()
-    print(image_file_path)
+            # Determine the file type based on the extension
+            file_extension = filename.rsplit('.', 1)[1].lower()
 
-    def prepare_image_local(image_path):
-        try:
-            # Loads the image into memory
-            with io.open(image_path, 'rb') as image_file:
-                content = image_file.read()
-            image = vision.Image(content=content)
-            return image
-        except Exception as e:
-            print(e)
-            return
+            if file_extension in ('jpg', 'jpeg', 'png'):
 
-    image = prepare_image_local(image_file_path)
+                image_file_path = file_path
+                client = vision.ImageAnnotatorClient()
 
-    class VisionAI:
-        Text_Detection = namedtuple('Text_Detection', ('description', 'bounding_poly'))
+                def prepare_image_local(image_path):
+                    try:
+                        # Loads the image into memory
+                        with io.open(image_path, 'rb') as image_file:
+                            content = image_file.read()
+                        image = vision.Image(content=content)
+                        return image
+                    except Exception as e:
+                        print(e)
+                        return
 
-        def __init__(self, client, image):
-            self.client = client
-            self.image = image
+                image = prepare_image_local(image_file_path)
 
-        def text_detection(self):
-            response = self.client.text_detection(image=self.image)
-            texts = response.text_annotations
-            if texts:
-                results = []
-                for text in texts:
-                    results.append(self.Text_Detection(text.description, text.bounding_poly.vertices))
-                return results
-            return
+                class VisionAI:
+                    Text_Detection = namedtuple('Text_Detection', ('description', 'bounding_poly'))
+
+                    def __init__(self, client, image):
+                        self.client = client
+                        self.image = image
+
+                    def text_detection(self):
+                        response = self.client.text_detection(image=self.image)
+                        texts = response.text_annotations
+                        if texts:
+                            results = []
+                            for text in texts:
+                                results.append(self.Text_Detection(text.description, text.bounding_poly.vertices))
+                            return results
+                        return
+
+                va = VisionAI(client, image)
+                text = va.text_detection()
+                text_content = text[0].description
+
+            elif file_extension in ('pdf', 'doc', 'docx', 'txt'):
+                text_content = docx2txt.process(uploaded_file)
 
     def generate_flash_cards(notes):
         prompt = f"Create flash cards from these notes {notes}, make sure for each you do Front: Back: ! If any of the front definitions look like typo, try  your best to resolve the type"
@@ -90,15 +99,7 @@ def index():
 
         return flash_cards
 
-    va = VisionAI(client, image)
-    text = va.text_detection()
-    text_content = text[0].description
-
     gpt_response = generate_flash_cards(text_content)
-
-    va = VisionAI(client, image)
-    text = va.text_detection()
-    text_content = text[0].description
 
     # print(text[0].description)
 

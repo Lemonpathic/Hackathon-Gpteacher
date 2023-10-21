@@ -6,6 +6,7 @@ body{
 
 }
 #main{
+    text-align: center;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: min-content min-content min-content 1fr !important;

@@ -22,13 +22,7 @@
                 <button class="viewButton" id="grid" onclick="switchView('grid')">Grid View</button>
                 <button class="viewButton" id="list" onclick="switchView('list')">List View</button>
             </div>
-            <div id="loading-msgs" style="display: none">
-                <h1>This may take a little to process please hang in there!</h1>
-                <h1>Scanning handwriting...</h1>
-                <h1>Little dinosaur robots are finishing your flashcards</h1>
-                <h1>Typo found... correcting</h1>
-                <h1>And! Almost there.</h1>
-            </div>
+            <h1 class="message"></h1>
             <div class="loader"></div>
             <div class="flashcards list-view">
                 {% for item in data %}
@@ -161,7 +155,7 @@
             "And! Almost there."
         ];
 
-        const messageElement = document.getElementById('message');
+        const messageElement = document.getElementsByClassName('message');
         let currentIndex = 0;
 
         function showNextMessage() {

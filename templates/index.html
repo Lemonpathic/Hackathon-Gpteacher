@@ -8,14 +8,15 @@
     <title>Title</title>
 </head>
 <body>
-<form method="POST" action="/upload" enctype="multipart/form-data">
-    <input type="file" name="image">
-    <input type="submit" value="Upload">
-</form>
 
 <div id="site">
     <div id="snowZone">
         <div id="main">
+              <form method="POST" action="/upload" enctype="multipart/form-data" style="grid-row: 1">
+          <input type="file" name="document" class = 'file-input' id="fileInput">
+          <label for="fileInput" class="file-label">Choose File</label>
+          <input class="form-button" type="submit" value="Upload">
+        </form>
             <div class="views">
                 <button class="viewButton" id="grid" onclick="switchView('grid')">Grid View</button>
                 <button class="viewButton" id="list" onclick="switchView('list')">List View</button>

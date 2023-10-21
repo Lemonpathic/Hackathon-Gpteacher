@@ -12,6 +12,7 @@ UPLOAD_FOLDER = 'uploaded'
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# openai.api_key ='hello'
 openai.api_key = os.environ['OPENAI_KEY']
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'serviceaccounttoken.json'
 

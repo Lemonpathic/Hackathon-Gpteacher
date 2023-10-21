@@ -3,8 +3,14 @@ body{
     background-color: aquamarine;
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
-    grid-template-rows: min-content auto;
+
 }
+#main{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content min-content min-content 1fr !important;
+}
+
 .snowflakes {
     top: 0px;
     left: 0px;
@@ -80,8 +86,9 @@ body{
 /*    transform: rotateX(180deg);*/
 /*}*/
 .list-view{
+    grid-row: 4;
     align-self: center;
-    grid-column: 2;
+    grid-column: 1;
     justify-content: center;
     display: grid;
     grid-template-columns: 1fr;
@@ -91,7 +98,7 @@ body{
 }
 .grid-view{
     align-self: center;
-    grid-column: 2;
+    grid-column: 1;
     justify-content: center;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -100,7 +107,10 @@ body{
 }
 
 .views{
-    grid-column: 2;
+    grid-column: 1;
+    grid-row: 2;
+    align-self: end;
+    justify-self: left;
 }
 
 .fa-question:hover{
@@ -136,4 +146,70 @@ body{
     color: black;
 }
 
+.viewButton{
+    margin-top: 50px;
+    font-family: Comfortaa;
+    width: 60px;
+    background-color: gainsboro; /* Transparent background */
+    border: transparent; /* Solid border with a color (e.g., gray) */
+    color: #333; /* Text color */
+    padding: 10px 20px; /* Padding for spacing */
+    font-size: 10px; /* Font size */
+    text-align: center; /* Center-align text */
+    text-decoration: none; /* Remove underline on links */
+    display: inline-block; /* Display as an inline block element */
+    border-radius: 4px; /* Slightly round the corners */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition effect on hover */
+}
 
+.viewButton:hover{
+    background-color: #333; /* Change background color on hover */
+    color: #fff; /* Change text color on hover */
+}
+.form-button{
+    font-family: Comfortaa;
+    width: 200px;
+    background-color: gainsboro; /* Transparent background */
+    border: transparent; /* Solid border with a color (e.g., gray) */
+    color: #333; /* Text color */
+    padding: 10px 20px; /* Padding for spacing */
+    font-size: 16px; /* Font size */
+    text-align: center; /* Center-align text */
+    text-decoration: none; /* Remove underline on links */
+    display: inline-block; /* Display as an inline block element */
+    border-radius: 4px; /* Slightly round the corners */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition effect on hover */
+}
+
+.form-button:hover{
+    background-color: #333; /* Change background color on hover */
+    color: #fff; /* Change text color on hover */
+}
+form{
+    justify-self: center;
+    align-self: center;
+}
+.file-input{
+    display: none;
+}
+.file-label{
+    width: 200px;
+    font-family: Comfortaa;
+    background-color: gainsboro; /* Transparent background */
+    border: transparent; /* Solid border with a color (e.g., gray) */
+    color: #333; /* Text color */
+    padding: 10px 20px; /* Padding for spacing */
+    font-size: 16px; /* Font size */
+    text-align: center; /* Center-align text */
+    text-decoration: none; /* Remove underline on links */
+    display: inline-block; /* Display as an inline block element */
+    border-radius: 4px; /* Slightly round the corners */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition effect on hover */
+}
+.file-label:hover{
+    background-color: #333; /* Change background color on hover */
+    color: #fff; /* Change text color on hover */
+}

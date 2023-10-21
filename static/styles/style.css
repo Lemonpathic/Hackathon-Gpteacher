@@ -213,3 +213,23 @@ form{
     background-color: #333; /* Change background color on hover */
     color: #fff; /* Change text color on hover */
 }
+
+@media (max-width: 768px) {
+    /* Mobile-specific styles */
+    body {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+    #site{
+        grid-column: 1;
+        width: 1vh;
+    }
+    form{
+        justify-self: center;
+        align-self: center;
+        display: grid;
+        grid-column: 1;
+        align-content: center;
+    }
+    /* Add more mobile-specific styles here */
+}

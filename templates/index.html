@@ -150,33 +150,25 @@
 
   }
  function rotateMessages() {
-    const messages = document.querySelectorAll("#loading-msgs h1");
     const loader = document.querySelector('.loader');
+    loader.style.display = 'block'
+    const messages = document.querySelectorAll('#loading-msgs h1');
     let currentIndex = 0;
 
-    function displayNextMessage() {
-        if (currentIndex < messages.length) {
-            // Hide the current message
-            messages[currentIndex].style.display = "none";
-            currentIndex++;
-
-            // Show the next message
-            if (currentIndex < messages.length) {
-                messages[currentIndex].style.display = "block";
-            }
-        } else {
-            // All messages have been displayed, hide the loader and stop the rotation
-            loader.style.display = 'none';
-            clearInterval(rotationInterval);
-        }
+    function showNextMessage() {
+        messages[currentIndex].style.display = 'none'; // Hide the current message
+        currentIndex = (currentIndex + 1) % messages.length; // Move to the next message
+        messages[currentIndex].style.display = 'block'; // Show the next message
     }
 
-    // Initially, show the first message and hide the loader
-    messages[currentIndex].style.display = "block";
-    loader.style.display = 'none';
+    showNextMessage(); // Show the first message immediately
 
-    // Set an interval to reveal messages one by one for 6 seconds each
-    const rotationInterval = setInterval(displayNextMessage, 6000);
+    const interval = setInterval(() => {
+        showNextMessage();
+    }, 6000); // Switch messages every 6 seconds
+
+    // Optionally, you can clear the interval after a certain number of cycles or when needed.
+    // clearInterval(interval);
 }
 
   function edit(side){

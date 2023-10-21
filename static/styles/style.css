@@ -244,6 +244,7 @@ form{
 }
 
 .loader {
+    grid-row: 4;
     align-self: center;
     justify-self: center;
     display: none;
@@ -261,6 +262,8 @@ form{
 }
 
 h1{
+    margin-top: 60px;
+    grid-row: 4;
     font-family: Comfortaa, serif;
     font-size: 20px;
 }

@@ -71,7 +71,7 @@ def index():
             return
 
     def generate_flash_cards(notes):
-        prompt = f"Create flash cards from these notes {notes}, make sure for each you do Front: Back:"
+        prompt = f"Create flash cards from these notes {notes}, make sure for each you do Front: Back: ! If any of the front definitions look like typo, try  your best to resolve the type"
 
         messages = [
             {"role": "system", "content": prompt},

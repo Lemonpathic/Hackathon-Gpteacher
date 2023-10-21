@@ -23,8 +23,8 @@
                 <button class="viewButton" id="grid" onclick="switchView('grid')">Grid View</button>
                 <button class="viewButton" id="list" onclick="switchView('list')">List View</button>
             </div>
-            <div class="loading"></div>
-            <div class="loader"></div>
+            <div class="loading">
+
             <h1 id="message"></h1>
             </div>
             <div class="flashcards list-view">
@@ -147,7 +147,6 @@
 
   }
  function rotateMessages() {
-    const loader = document.querySelector('.loader');
     const messageElement = document.getElementById('message');
 
     loader.style.display = 'block';

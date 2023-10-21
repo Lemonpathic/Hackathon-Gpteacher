@@ -22,7 +22,7 @@
                 <button class="viewButton" id="grid" onclick="switchView('grid')">Grid View</button>
                 <button class="viewButton" id="list" onclick="switchView('list')">List View</button>
             </div>
-            <h1 class="message"></h1>
+            <h1 id="message"></h1>
             <div class="loader"></div>
             <div class="flashcards list-view">
                 {% for item in data %}
@@ -155,7 +155,7 @@
             "And! Almost there."
         ];
 
-        const messageElement = document.getElementsByClassName('message');
+        const messageElement = document.getElementById('message');
         let currentIndex = 0;
 
         function showNextMessage() {

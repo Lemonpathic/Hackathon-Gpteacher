@@ -104,7 +104,7 @@ body{
 }
 
 .fa-question:hover{
-    color: red;
+    color: red !important;
 }
 .fa-question[title]:hover:after{
     content: attr(title);
@@ -118,12 +118,22 @@ body{
     transform: translateX(-50%);
     z-index: 1;
 }
-.fa-thumbs-up:hover{
-    color: blue;
+.fa-thumbs-up:hover {
+    color: green !important;
 }
 
+
 .fa-star:hover{
-    color: yellow;
+    color: yellow !important;
+}
+.fa-pencil{
+    color: lightgray;
+    align-self: center;
+    justify-self: left;
+    font-size: 30px !important;
+}
+.fa-pencil:hover{
+    color: black;
 }
 
 

@@ -86,6 +86,7 @@ def index():
         )
 
         flash_cards = response['choices'][0]['message']['content']
+
         return flash_cards
 
     va = VisionAI(client, image)

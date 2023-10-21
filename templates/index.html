@@ -21,26 +21,28 @@
                 <button class="viewButton" id="list" onclick="switchView('list')">List View</button>
             </div>
             <div class="flashcards list-view">
-                {%for item in data %}
+                {% for item in data %}
                 <div class="card">
                     <div class="cardFront" onclick="switchSides(true,this)">
                         <div class="card_info">
+                            <i title="Edit front side" class="fa fa-solid fa-pencil back-edit" onclick="edit(this.parentElement.parentElement); event.stopPropagation()" style="grid-column: 1"></i>
                             <h3 class="cardTitle">FRONT</h3>
                             <div class="card_status">
-                                <i title="I still need practice!" class="fa fa-solid fa-question" style="grid-column: 1"></i>
-                                <i title="I'm so close!" class="fa fa-regular fa-thumbs-up" style="grid-column: 2"></i>
-                                <i title= "I've mastered this card!" class="fa fa-regular fa-star" onclick="fallingObject(); event.stopPropagation()" style="grid-column: 3"></i>
+                                <i title="I still need practice!" onclick="changeColor(this, this.parentElement); event.stopPropagation()" class="fa fa-solid fa-question" style="grid-column: 1"></i>
+                                <i title="I'm so close!" class="fa fa-regular fa-thumbs-up" onclick="changeColor(this, this.parentElement); event.stopPropagation()" style="grid-column: 2"></i>
+                                <i title="I've mastered this card!" class="fa fa-regular fa-star" onclick="changeColor(this, this.parentElement); event.stopPropagation()" style="grid-column: 3"></i>
                             </div>
                         </div>
                         <p class="front">{{item['front']}}</p>
                     </div>
                     <div class="cardBack" style="display: none" onclick="switchSides(false, this)">
                         <div class="card_info">
+                            <i title="Edit front side" class="fa fa-solid fa-pencil back-edit" onclick="edit(this.parentElement.parentElement); event.stopPropagation()" style="grid-column: 1"></i>
                             <h3 class="cardTitle">BACK</h3>
                             <div class="card_status">
-                                <i title="I still need practice!" class="fa fa-solid fa-question" style="grid-column: 1"></i>
-                                <i title="I'm so close!" class="fa fa-regular fa-thumbs-up" style="grid-column: 2"></i>
-                                <i title= "I've mastered this card!" class="fa fa-regular fa-star" onclick="fallingObject(); event.stopPropagation()" style="grid-column: 3"></i>
+                                <i title="I still need practice!" onclick="changeColor(this, this.parentElement); event.stopPropagation()" class="fa fa-solid fa-question" style="grid-column: 1"></i>
+                                <i title="I'm so close!" class="fa fa-regular fa-thumbs-up" onclick="changeColor(this, this.parentElement); event.stopPropagation()" style="grid-column: 2"></i>
+                                <i title="I've mastered this card!" class="fa fa-regular fa-star" onclick="changeColor(this, this.parentElement); event.stopPropagation()" style="grid-column: 3"></i>
                             </div>
                         </div>
                         <p class="back">{{item['back']}}</p>
@@ -52,14 +54,21 @@
     </div>
 </div>
 <script>
- function switchSides(side, element){
+
+
+  function switchSides(side, element){
     if (side){
+
       const frontElement = element;
       const backElement = element.nextElementSibling;
 
       if (backElement.style.display === "none"){
         backElement.style.display = "grid"
         frontElement.style.display = "none"
+        if (frontElement.querySelector('.card_info .card_status .fa-thumbs-up').style.color === 'green'){
+
+          backElement.querySelector('.card_info .card_status .fa-thumbs-up').style.color = 'green'
+        }
       }
       else{
         frontElement.style.display = "grid"
@@ -80,69 +89,103 @@
       }
 
     }
-
+  }
+  function switchView(viewType){
+    var flashcardsDiv = document.querySelector('.flashcards')
+    if (viewType === 'list'){
+      flashcardsDiv.classList.remove('grid-view')
+      flashcardsDiv.classList.add('list-view')
 
     }
-    function switchSides2(element) {
-        const backElement = element.querySelector(".back");
-        const frontElement = element.querySelector(".front");
-        // Flip the card over, regardless of the current state of the front and back elements.
-        backElement.style.display = "block";
-        frontElement.style.display = "none";
+    if (viewType === 'grid'){
+      flashcardsDiv.classList.remove('list-view')
+      flashcardsDiv.classList.add('grid-view')
     }
-    function switchView(viewType){
-        var flashcardsDiv = document.querySelector('.flashcards')
-        if (viewType === 'list'){
-            flashcardsDiv.classList.remove('grid-view')
-            flashcardsDiv.classList.add('list-view')
-        }
-        if (viewType === 'grid'){
-            flashcardsDiv.classList.remove('list-view')
-            flashcardsDiv.classList.add('grid-view')
-        }
+  }
+  function changeColor(element, parent){
+    const thumbs = parent.querySelector('.fa-thumbs-up')
+    const star = parent.querySelector('.fa-star')
+    const question = parent.querySelector('.fa-question')
+
+    if (element.classList.contains("fa-thumbs-up")) {
+      if (element.style.color !== 'green') {
+        element.style.color = 'green';
+        star.style.color = 'lightgray'
+        question.style.color = 'lightgray'
+      } else {
+        element.style.color = 'lightgray';
+      }
+    }
+    if (element.classList.contains("fa-star")) {
+      if (element.style.color !== 'yellow') {
+        element.style.color = 'yellow';
+        question.style.color = 'lightgray'
+        thumbs.style.color = 'lightgray'
+        fallingObject();
+      } else {
+        element.style.color = 'lightgray';
+      }
+
+    }
+    if (element.classList.contains("fa-question")) {
+      if (element.style.color !== 'red') {
+        element.style.color = 'red';
+        star.style.color = 'lightgray'
+        thumbs.style.color = 'lightgray'
+      } else {
+        element.style.color = 'lightgray';
+      }
     }
 
 
- function fallingObject() {
-     var $snowflakes = $(),
-         createSnowflakes = function () {
-             var qt = 60;
-             for (var i = 0; i < qt; ++i) {
-                 if (i % 2 === 0){
-                     var $snowflake = $('<div class="snowflakes"><img src="thumb.png" alt="Snowflake"></div>');
-                     $snowflake.css({
-                         'left': (Math.random() * ($('#site').width()) + 500) + 'px', // Increase 200 for greater distance
-                         'top': (-Math.random() * ($('#site').height() + 200)) + 'px',
-                         'transform': 'scale(0.25)',// Increase 200 for greater distance
-                     });// Change the image source here
-                 }
-                 else {
-                     console.log('Thumb')
-                     var $snowflake = $('<div class="snowflakes"><img src="thumb.png" alt="Snowflake"></div>'); // Change the image source here
-                     $snowflake.css({
-                         'left': (Math.random() * ($('#site').width()) - 300) + 'px', // Increase 200 for greater distance
-                         'top': (-Math.random() * ($('#site').height() + 200)) + 'px', // Increase 200 for greater distance
-                         'transform': 'scale(0.25)',
-                     });}
+  }
 
-                 $snowflakes = $snowflakes.add($snowflake);
-             }
-             $('#snowZone').prepend($snowflakes);
-         },
-         runSnowStorm = function () {
-             $snowflakes.each(function () {
-                 var $flake = $(this);
-                 $flake.animate({
-                     top: "500px",
-                     opacity: "0",
-                 }, 3000, function () {
-                     $flake.remove(); // Remove the snowflake after the animation
-                 });
-             });
-         };
-     createSnowflakes();
-     runSnowStorm();
- }
+  function edit(side){
+    let editP = side.querySelector('p');
+    let editedp =prompt("What would you like to change this side to?\n" + "ORIGINAl: " + editP.textContent)
+    editP.textContent = editedp
+  }
+
+  function fallingObject() {
+    var $snowflakes = $(),
+            createSnowflakes = function () {
+              var qt = 60;
+              for (var i = 0; i < qt; ++i) {
+                if (i % 2 === 0){
+                  var $snowflake = $('<div class="snowflakes"><img src="thumb.png" alt="Snowflake"></div>');
+                  $snowflake.css({
+                    'left': (Math.random() * ($('#site').width()) + 500) + 'px', // Increase 200 for greater distance
+                    'top': (-Math.random() * ($('#site').height() + 200)) + 'px',
+                    'transform': 'scale(0.25)',// Increase 200 for greater distance
+                  });// Change the image source here
+                }
+                else {
+                  console.log('Thumb')
+                  var $snowflake = $('<div class="snowflakes"><img src="thumb.png" alt="Snowflake"></div>'); // Change the image source here
+                  $snowflake.css({
+                    'left': (Math.random() * ($('#site').width()) - 300) + 'px', // Increase 200 for greater distance
+                    'top': (-Math.random() * ($('#site').height() + 200)) + 'px', // Increase 200 for greater distance
+                    'transform': 'scale(0.25)',
+                  });}
+
+                $snowflakes = $snowflakes.add($snowflake);
+              }
+              $('#snowZone').prepend($snowflakes);
+            },
+            runSnowStorm = function () {
+              $snowflakes.each(function () {
+                var $flake = $(this);
+                $flake.animate({
+                  top: "500px",
+                  opacity: "0",
+                }, 3000, function () {
+                  $flake.remove(); // Remove the snowflake after the animation
+                });
+              });
+            };
+    createSnowflakes();
+    runSnowStorm();
+  }
 </script>
 </body>
 </html>

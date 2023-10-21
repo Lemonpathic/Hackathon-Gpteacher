@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/style.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="POST" action="/upload" enctype="multipart/form-data">
+    <input type="file" name="image">
+    <input type="submit" value="Upload">
+</form>
+
+<div id="site">
+    <div id="snowZone">
+        <div id="main">
+            <div class="views">
+                <button class="viewButton" id="grid" onclick="switchView('grid')">Grid View</button>
+                <button class="viewButton" id="list" onclick="switchView('list')">List View</button>
+            </div>
+            <div class="flashcards list-view">
+                {%for item in data %}
+                <div class="card">
+                    <div class="cardFront" onclick="switchSides(true,this)">
+                        <div class="card_info">
+                            <h3 class="cardTitle">FRONT</h3>
+                            <div class="card_status">
+                                <i title="I still need practice!" class="fa fa-solid fa-question" style="grid-column: 1"></i>
+                                <i title="I'm so close!" class="fa fa-regular fa-thumbs-up" style="grid-column: 2"></i>
+                                <i title= "I've mastered this card!" class="fa fa-regular fa-star" onclick="fallingObject(); event.stopPropagation()" style="grid-column: 3"></i>
+                            </div>
+                        </div>
+                        <p class="front">{{item['front']}}</p>
+                    </div>
+                    <div class="cardBack" style="display: none" onclick="switchSides(false, this)">
+                        <div class="card_info">
+                            <h3 class="cardTitle">BACK</h3>
+                            <div class="card_status">
+                                <i title="I still need practice!" class="fa fa-solid fa-question" style="grid-column: 1"></i>
+                                <i title="I'm so close!" class="fa fa-regular fa-thumbs-up" style="grid-column: 2"></i>
+                                <i title= "I've mastered this card!" class="fa fa-regular fa-star" onclick="fallingObject(); event.stopPropagation()" style="grid-column: 3"></i>
+                            </div>
+                        </div>
+                        <p class="back">{{item['back']}}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+ function switchSides(side, element){
+    if (side){
+      const frontElement = element;
+      const backElement = element.nextElementSibling;
+
+      if (backElement.style.display === "none"){
+        backElement.style.display = "grid"
+        frontElement.style.display = "none"
+      }
+      else{
+        frontElement.style.display = "grid"
+        backElement.style.display = "none"
+      }
+
+    }
+    if(!side){
+      const backElement = element;
+      const frontElement = element.previousElementSibling;
+      if (backElement.style.display === "none"){
+        backElement.style.display = "grid"
+        frontElement.style.display = "none"
+      }
+      else{
+        frontElement.style.display = "grid"
+        backElement.style.display = "none"
+      }
+
+    }
+
+
+    }
+    function switchSides2(element) {
+        const backElement = element.querySelector(".back");
+        const frontElement = element.querySelector(".front");
+        // Flip the card over, regardless of the current state of the front and back elements.
+        backElement.style.display = "block";
+        frontElement.style.display = "none";
+    }
+    function switchView(viewType){
+        var flashcardsDiv = document.querySelector('.flashcards')
+        if (viewType === 'list'){
+            flashcardsDiv.classList.remove('grid-view')
+            flashcardsDiv.classList.add('list-view')
+        }
+        if (viewType === 'grid'){
+            flashcardsDiv.classList.remove('list-view')
+            flashcardsDiv.classList.add('grid-view')
+        }
+    }
+
+
+ function fallingObject() {
+     var $snowflakes = $(),
+         createSnowflakes = function () {
+             var qt = 60;
+             for (var i = 0; i < qt; ++i) {
+                 if (i % 2 === 0){
+                     var $snowflake = $('<div class="snowflakes"><img src="thumb.png" alt="Snowflake"></div>');
+                     $snowflake.css({
+                         'left': (Math.random() * ($('#site').width()) + 500) + 'px', // Increase 200 for greater distance
+                         'top': (-Math.random() * ($('#site').height() + 200)) + 'px',
+                         'transform': 'scale(0.25)',// Increase 200 for greater distance
+                     });// Change the image source here
+                 }
+                 else {
+                     console.log('Thumb')
+                     var $snowflake = $('<div class="snowflakes"><img src="thumb.png" alt="Snowflake"></div>'); // Change the image source here
+                     $snowflake.css({
+                         'left': (Math.random() * ($('#site').width()) - 300) + 'px', // Increase 200 for greater distance
+                         'top': (-Math.random() * ($('#site').height() + 200)) + 'px', // Increase 200 for greater distance
+                         'transform': 'scale(0.25)',
+                     });}
+
+                 $snowflakes = $snowflakes.add($snowflake);
+             }
+             $('#snowZone').prepend($snowflakes);
+         },
+         runSnowStorm = function () {
+             $snowflakes.each(function () {
+                 var $flake = $(this);
+                 $flake.animate({
+                     top: "500px",
+                     opacity: "0",
+                 }, 3000, function () {
+                     $flake.remove(); // Remove the snowflake after the animation
+                 });
+             });
+         };
+     createSnowflakes();
+     runSnowStorm();
+ }
+</script>
+</body>
+</html>

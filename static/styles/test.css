@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa&family=Geologica&family=Montserrat:wght@300&display=swap');
+body{
+    background-color: aquamarine;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-rows: min-content auto;
+}
+.snowflakes {
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    transform: scale(0.25);
+    display: block;
+}
+#site{
+    grid-column: 2;
+}
+.cardFront, .cardBack{
+    padding: 15px 52px;
+    display: grid;
+    grid-template-rows: 15% 85%;
+    grid-template-columns: 1fr;
+    margin: 20px;
+    background-color: white;
+    border-radius: 20px;
+    text-align: center;
+    width: 450px;
+    align-items: center;
+    height: 310px;     /* Set the initial height to 400px */
+    max-height: 800px; /* Set the maximum height to 800px */
+    overflow: auto;
+}
+.cardFront > :nth-child(-n+1){
+
+    align-self: start;
+}
+
+.cardBack > :nth-child(-n+1){
+
+    align-self: start;
+}
+
+
+.cardTitle{
+    color: lightgray;
+    grid-column: 2;
+}
+.thumbs_up, .thumbs_down{
+    font-size: x-small;
+    width: 60px;
+    height: 30px;
+    align-self: center;
+    justify-self: center;
+
+
+}
+.thumbs_up{
+    grid-column: 2;
+}
+.card_status{
+    color: lightgray;
+    align-content: center;
+    justify-content: center;
+    font-size: 30px;
+    display: grid;
+    grid-auto-columns: 1fr 1fr 1fr;
+    grid-column: 3;
+}
+
+.card_info{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.card p {
+    font-size: 30px;
+    font-family: Comfortaa;
+}
+/*.card:hover{*/
+/*    transform: rotateX(180deg);*/
+/*}*/
+.list-view{
+    align-self: center;
+    grid-column: 2;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-content: center;
+    justify-items: center;
+
+}
+.grid-view{
+    align-self: center;
+    grid-column: 2;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-content: center;
+    justify-items: center;
+}
+
+.views{
+    grid-column: 2;
+}
+
+.fa-question:hover{
+    color: red;
+}
+.fa-question[title]:hover:after{
+    content: attr(title);
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+.fa-thumbs-up:hover{
+    color: blue;
+}
+
+.fa-star:hover{
+    color: yellow;
+}
+
+

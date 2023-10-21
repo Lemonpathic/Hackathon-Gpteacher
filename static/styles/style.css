@@ -106,7 +106,12 @@ body{
     align-content: center;
     justify-items: center;
 }
+h2{
+    font-family: system-ui;
+    font-size: large;
+    text-align: center;
 
+}
 .views{
     grid-column: 1;
     grid-row: 3;

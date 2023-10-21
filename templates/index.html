@@ -23,8 +23,8 @@
                 <button class="viewButton" id="grid" onclick="switchView('grid')">Grid View</button>
                 <button class="viewButton" id="list" onclick="switchView('list')">List View</button>
             </div>
-            <h1 id="message"></h1>
             <div class="loader"></div>
+            <h1 id="message"></h1>
             <div class="flashcards list-view">
                 {% for item in data %}
                 <div class="card">
@@ -146,33 +146,38 @@
   }
  function rotateMessages() {
     const loader = document.querySelector('.loader');
+    const messageElement = document.getElementById('message');
 
-    loader.style.display = 'block'
+    loader.style.display = 'block';
+
     const messages = [
-            "This may take a little to process, please hang in there!",
-            "Scanning handwriting...",
-            "Little dinosaur robots are finishing your flashcards",
-            "Typo found... correcting",
-            "And! Almost there."
-        ];
+        "This may take a little to process, please hang in there!",
+        "Scanning handwriting...",
+        "Little dinosaur robots are finishing your flashcards",
+        "Typo found... correcting",
+        "And! Almost there."
+    ];
 
-        const messageElement = document.getElementById('message');
-        let currentIndex = 0;
+    let currentIndex = 0;
 
-        function showNextMessage() {
-            messageElement.textContent = messages[currentIndex];
-            currentIndex = (currentIndex + 1) % messages.length;
+    function showNextMessage() {
+        messageElement.textContent = messages[currentIndex];
+        currentIndex = (currentIndex + 1) % messages.length;
+
+        // Check if we've displayed all messages
+        if (currentIndex === 0) {
+            // Hide the loader after all messages have been shown
+            messageElement.style.display = 'none';
+            loader.style.display = 'none';
         }
-
-        showNextMessage(); // Show the first message immediately
-
-        const interval = setInterval(() => {
-            showNextMessage();
-        }, 6000); // Switch messages every 6 seconds
-
-        // Optionally, you can clear the interval after a certain number of cycles or when needed.
-        // clearInterval(interval);
     }
+
+    showNextMessage(); // Show the first message immediately
+
+    const interval = setInterval(() => {
+        showNextMessage();
+    }, 6000); // Switch messages every 6 seconds
+}
 
   function edit(side){
     let editP = side.querySelector('p');

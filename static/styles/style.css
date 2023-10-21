@@ -275,10 +275,12 @@ form{
 }
 
 h1{
-    grid-row: 4;
+    grid-row: 5;
     margin-top: 60px;
     font-family: Comfortaa, serif;
     font-size: 20px;
+    align-self: center;
+    justify-self: center;
 }
 .loading{
     align-self: center;

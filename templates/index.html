@@ -12,11 +12,11 @@
 <div id="site">
     <div id="snowZone">
         <div id="main">
-              <form method="POST" action="/upload" enctype="multipart/form-data" style="grid-row: 1">
-          <input type="file" name="image" class = 'file-input' id="fileInput">
-          <label for="fileInput" class="file-label">Choose File</label>
-          <input class="form-button" type="file" name="file" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx, .txt">
+            <form method="POST" action="/upload" enctype="multipart/form-data" style="grid-row: 1">
+          <input id="fileInput" type="file" name="file" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx, .txt" style="display: none">
 
+          <label for="fileInput" class="file-label">Choose File</label>
+          <input class="form-button" type="submit" value="Upload">
         </form>
             <div class="views">
                 <button class="viewButton" id="grid" onclick="switchView('grid')">Grid View</button>

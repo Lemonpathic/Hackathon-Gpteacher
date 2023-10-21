@@ -217,6 +217,9 @@ form{
 
 @media (max-width: 768px) {
     /* Mobile-specific styles */
+    .views{
+        display: none;
+    }
     body {
         display: grid;
         grid-template-columns: 1fr;

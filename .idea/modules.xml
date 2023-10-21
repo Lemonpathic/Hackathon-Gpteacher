@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../GPTeacherGit/.idea/GPTeacherGit.iml" filepath="$PROJECT_DIR$/../GPTeacherGit/.idea/GPTeacherGit.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/hackathon_gpteacher.iml" filepath="$PROJECT_DIR$/.idea/hackathon_gpteacher.iml" />
     </modules>
   </component>

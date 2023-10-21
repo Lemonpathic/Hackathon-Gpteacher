@@ -275,6 +275,7 @@ form{
 }
 
 h1{
+    grid-row: 4;
     margin-top: 60px;
     font-family: Comfortaa, serif;
     font-size: 20px;

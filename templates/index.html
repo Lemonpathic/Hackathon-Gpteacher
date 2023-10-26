@@ -14,9 +14,10 @@
         <h2 style="grid-row: 1; margin-top: 20px" >Choose and image or a document of your notes to generate flashcards!</h2>
         <div id="main">
             <form method="POST" action="/upload" enctype="multipart/form-data" style="grid-row: 2">
-          <input id="fileInput" type="file" name="file" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx, .txt" style="display: none">
-
+          <input id="fileInput" type="file" name="file" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx, .txt" style="display: none" multiple>
+        <input id="fileInput1" type="file" name="file" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx, .txt" style="display: none" multiple>
           <label for="fileInput" class="file-label">Choose File</label>
+          <label for="fileInput1" class="file-label">Choose File</label>
           <input class="form-button" type="submit" value="Upload" onclick="rotateMessages()">
         </form>
             <div class="views">
@@ -27,7 +28,7 @@
             <h1 id="message"></h1>
 
             <div class="flashcards list-view">
-                {% for item in data %}
+                {% for key, value in data.items() %}
                 <div class="card">
                     <div class="cardFront" onclick="switchSides(true,this)">
                         <div class="card_info">
@@ -39,7 +40,7 @@
                                 <i title="I've mastered this card!" class="fa fa-regular fa-star" onclick="changeColor(this, this.parentElement); event.stopPropagation()" style="grid-column: 3"></i>
                             </div>
                         </div>
-                        <p class="front">{{item['front']}}</p>
+                        <p class="front">{{ key }}</p>
                     </div>
                     <div class="cardBack" style="display: none" onclick="switchSides(false, this)">
                         <div class="card_info">
@@ -51,7 +52,7 @@
                                 <i title="I've mastered this card!" class="fa fa-regular fa-star" onclick="changeColor(this, this.parentElement); event.stopPropagation()" style="grid-column: 3"></i>
                             </div>
                         </div>
-                        <p class="back">{{item['back']}}</p>
+                        <p class="back">{{ value }}</p>
                     </div>
                 </div>
                 {% endfor %}

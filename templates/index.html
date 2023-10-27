@@ -28,34 +28,36 @@
             <h1 id="message"></h1>
 
             <div class="flashcards list-view">
-                {% for key, value in data.items() %}
-                <div class="card">
-                    <div class="cardFront" onclick="switchSides(true,this)">
-                        <div class="card_info">
-                            <i title="Edit front side" class="fa fa-solid fa-pencil back-edit" onclick="edit(this.parentElement.parentElement); event.stopPropagation()" style="grid-column: 1"></i>
-                            <h3 class="cardTitle">FRONT</h3>
-                            <div class="card_status">
-                                <i title="I still need practice!" onclick="changeColor(this, this.parentElement); event.stopPropagation()" class="fa fa-solid fa-question" style="grid-column: 1"></i>
-                                <i title="I'm so close!" class="fa fa-regular fa-thumbs-up" onclick="changeColor(this, this.parentElement); event.stopPropagation()" style="grid-column: 2"></i>
-                                <i title="I've mastered this card!" class="fa fa-regular fa-star" onclick="changeColor(this, this.parentElement); event.stopPropagation()" style="grid-column: 3"></i>
+                {% if data != "None" %}
+                    {% for key, value in data.items() %}
+                    <div class="card">
+                        <div class="cardFront" onclick="switchSides(true,this)">
+                            <div class="card_info">
+                                <i title="Edit front side" class="fa fa-solid fa-pencil back-edit" onclick="edit(this.parentElement.parentElement); event.stopPropagation()" style="grid-column: 1"></i>
+                                <h3 class="cardTitle">FRONT</h3>
+                                <div class="card_status">
+                                    <i title="I still need practice!" onclick="changeColor(this, this.parentElement); event.stopPropagation()" class="fa fa-solid fa-question" style="grid-column: 1"></i>
+                                    <i title="I'm so close!" class="fa fa-regular fa-thumbs-up" onclick="changeColor(this, this.parentElement); event.stopPropagation()" style="grid-column: 2"></i>
+                                    <i title="I've mastered this card!" class="fa fa-regular fa-star" onclick="changeColor(this, this.parentElement); event.stopPropagation()" style="grid-column: 3"></i>
+                                </div>
                             </div>
+                            <p class="front">{{ key }}</p>
                         </div>
-                        <p class="front">{{ key }}</p>
-                    </div>
-                    <div class="cardBack" style="display: none" onclick="switchSides(false, this)">
-                        <div class="card_info">
-                            <i title="Edit front side" class="fa fa-solid fa-pencil back-edit" onclick="edit(this.parentElement.parentElement); event.stopPropagation()" style="grid-column: 1"></i>
-                            <h3 class="cardTitle">BACK</h3>
-                            <div class="card_status">
-                                <i title="I still need practice!" onclick="changeColor(this, this.parentElement); event.stopPropagation()" class="fa fa-solid fa-question" style="grid-column: 1"></i>
-                                <i title="I'm so close!" class="fa fa-regular fa-thumbs-up" onclick="changeColor(this, this.parentElement); event.stopPropagation()" style="grid-column: 2"></i>
-                                <i title="I've mastered this card!" class="fa fa-regular fa-star" onclick="changeColor(this, this.parentElement); event.stopPropagation()" style="grid-column: 3"></i>
+                        <div class="cardBack" style="display: none" onclick="switchSides(false, this)">
+                            <div class="card_info">
+                                <i title="Edit front side" class="fa fa-solid fa-pencil back-edit" onclick="edit(this.parentElement.parentElement); event.stopPropagation()" style="grid-column: 1"></i>
+                                <h3 class="cardTitle">BACK</h3>
+                                <div class="card_status">
+                                    <i title="I still need practice!" onclick="event.stopPropagation(); changeColor(this, this.parentElement);" class="fa fa-solid fa-question" style="grid-column: 1"></i>
+                                    <i title="I'm so close!" class="fa fa-regular fa-thumbs-up" onclick="changeColor(this, this.parentElement); event.stopPropagation()" style="grid-column: 2"></i>
+                                    <i title="I've mastered this card!" class="fa fa-regular fa-star" onclick="changeColor(this, this.parentElement); event.stopPropagation()" style="grid-column: 3"></i>
+                                </div>
                             </div>
+                            <p class="back non-overflow">{{ value }}</p>
                         </div>
-                        <p class="back">{{ value }}</p>
                     </div>
-                </div>
-                {% endfor %}
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>
@@ -68,9 +70,19 @@
 
       const frontElement = element;
       const backElement = element.nextElementSibling;
+      const backPg = backElement.querySelector('p')
 
       if (backElement.style.display === "none"){
         backElement.style.display = "grid"
+        if (backElement.scrollHeight > backElement.clientHeight){
+            backPg.classList.remove('non-overflow')
+            backPg.classList.add('card-overflow')
+        }
+        else{
+            backPg.classList.remove('card-overflow')
+            backPg.classList.add('non-overflow')
+        }
+
         frontElement.style.display = "none"
         if (frontElement.querySelector('.card_info .card_status .fa-thumbs-up').style.color === 'green'){
 
@@ -109,43 +121,69 @@
       flashcardsDiv.classList.add('grid-view')
     }
   }
-  function changeColor(element, parent){
-    const thumbs = parent.querySelector('.fa-thumbs-up')
-    const star = parent.querySelector('.fa-star')
-    const question = parent.querySelector('.fa-question')
+  function changeColor(element, elementParent) {
+      const thumbs = elementParent.parentElement.parentElement.parentElement.querySelectorAll('.fa-thumbs-up')
+      console.log(thumbs)
+      console.log(elementParent.parentElement.parentElement.parentElement)
 
-    if (element.classList.contains("fa-thumbs-up")) {
-      if (element.style.color !== 'green') {
-        element.style.color = 'green';
-        star.style.color = 'lightgray'
-        question.style.color = 'lightgray'
-      } else {
-        element.style.color = 'lightgray';
+      const stars = elementParent.parentElement.parentElement.parentElement.querySelectorAll('.fa-star')
+      const questions = elementParent.parentElement.parentElement.parentElement.querySelectorAll('.fa-question')
+
+
+      if (element.classList.contains("fa-thumbs-up")) {
+          if (element.style.color !== 'green') {
+              for (const thumb of thumbs) {
+                  thumb.style.color = 'green'
+              }
+              for (const [index, _] of stars.entries()) {
+                  stars[index].style.color = 'lightgray'
+                  questions[index].style.color = 'lightgray'
+              }
+          }
+          else
+              {
+                  for (const thumb of thumbs) {
+                      thumb.style.color = 'lightgray'
+                  }
+              }
+          }
+          if (element.classList.contains("fa-star")) {
+              if (element.style.color !== 'yellow') {
+                  for (const star of stars) {
+                      star.style.color = 'yellow'
+                  }
+                  for (const [index, _] of stars.entries()){
+                      questions[index].style.color = 'lightgray'
+                      thumbs[index].style.color = 'lightgray'
+                  }
+                  // fallingObject();
+              } else {
+                  for (const star of stars){
+                      star.style.color = 'lightgray'
+                  }
+              }
+
+
+          }
+          if (element.classList.contains("fa-question")) {
+              if (element.style.color !== 'red') {
+                  for (const question of questions){
+                      question.style.color = 'red'
+                  }
+                  for (const [index, _] of stars.entries()) {
+                      stars[index].style.color = 'lightgray'
+                      thumbs[index].style.color = 'lightgray'
+                  }
+              } else {
+                  for (const question of questions){
+                      question.style.color = 'lightgray'
+                  }
+              }
+          }
+
+
       }
-    }
-    if (element.classList.contains("fa-star")) {
-      if (element.style.color !== 'yellow') {
-        element.style.color = 'yellow';
-        question.style.color = 'lightgray'
-        thumbs.style.color = 'lightgray'
-        fallingObject();
-      } else {
-        element.style.color = 'lightgray';
-      }
 
-    }
-    if (element.classList.contains("fa-question")) {
-      if (element.style.color !== 'red') {
-        element.style.color = 'red';
-        star.style.color = 'lightgray'
-        thumbs.style.color = 'lightgray'
-      } else {
-        element.style.color = 'lightgray';
-      }
-    }
-
-
-  }
  function rotateMessages() {
     const messageElement = document.getElementById('message');
 

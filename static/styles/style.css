@@ -287,3 +287,13 @@ h1{
     justify-self: center;
     grid-row: 4;
 }
+
+.non-overflow{
+    display: block;
+}
+
+.card-overflow{
+    align-self: normal;
+    margin-top: 25px;
+    padding-bottom: 35px;
+}

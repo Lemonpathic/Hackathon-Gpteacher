@@ -21,7 +21,7 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'serviceaccounttoken.json'
 
 @app.route('/')
 def init():
-    return render_template('index.html')
+    return render_template('index.html', data="None")
 
 
 @app.route('/upload', methods=['POST'])
@@ -84,38 +84,38 @@ def index():
     #         elif file_extension in ('pdf', 'doc', 'docx', 'txt'):
     #             text_content = docx2txt.process(uploaded_file)
     #
-
-    def generate_flash_cards(notes):
-        prompt = f"Create flash cards from the notes provided. Each flashcard should be structured with ‘Front:’ and ‘Back:’." \
-                 f" Please ensure that the answers are in simple line form, not in bullet points or dashes. Keep the explanations simple and concise," \
-                 f"  for easy memorization." \
-                 f" Remember, these are flashcards and they are meant to aid in memorization. Here are the notes:"
-
-        messages = [
-            {"role": "system", "content": prompt},
-            {"role": "user", "content": notes}
-        ]
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=messages,
-            temperature=0.03,
-            max_tokens=800
-
-        )
-
-        flash_cards = response['choices'][0]['message']['content']
-        # print(flash_cards)
-        return flash_cards
-
+    #
+    # def generate_flash_cards(notes):
+    #     prompt = f"Create flash cards from the notes provided. Each flashcard should be structured with ‘Front:’ and ‘Back:’." \
+    #              f" Please ensure that the answers are in simple line form, not in bullet points or dashes. Keep the explanations simple and concise," \
+    #              f"  for easy memorization." \
+    #              f" Remember, these are flashcards and they are meant to aid in memorization. Here are the notes:"
+    #
+    #     messages = [
+    #         {"role": "system", "content": prompt},
+    #         {"role": "user", "content": notes}
+    #     ]
+    #     response = openai.ChatCompletion.create(
+    #         model="gpt-3.5-turbo",
+    #         messages=messages,
+    #         temperature=0.03,
+    #         max_tokens=800
+    #
+    #     )
+    #
+    #     flash_cards = response['choices'][0]['message']['content']
+    #     return flash_cards
+    #
     # gpt_response = generate_flash_cards(text_content)
 
     def split_cards(text_cards):
-        separate_cards = text_cards.split('\n')
+        separate_cards = re.split(r'\n+', text_cards)
         filtered_separate_cards = []
+
         for card in separate_cards:
-            if card != ' ':
-                filtered_separate_cards.append(card)
-        # print(filtered_separate_cards)
+
+            if len(card.lstrip()) > 1:
+                filtered_separate_cards.append(card.lstrip())
 
         cards = []  # Initialize a list to store dictionaries for each card
 
@@ -127,7 +127,6 @@ def index():
                 front = True
             if front:
                 card_data['Front'] = card.replace('Front: ', '')
-                print(card_data['Front'])
 
             # else:
             #     card_data['Front'] = "Front pattern not found in the text."
@@ -141,44 +140,52 @@ def index():
         return cards
 
     gpt_response_ex = r"""Front: How did trade develop in Mesopotamia?
-Back: Villagers traded surplus grain for building materials and started organizing specific jobs.
-Front: What is the title of the chapter in the history book?
-Back: Ancient Mesopotamia
-Front: What are the big idea questions for this chapter?
-Back: How did farming develop due to the river? What are other ways that the river helped people? Did villages tend to be near the river, and why?
-Front: What are the two rivers that flow through Mesopotamia?
-Back: Tigris and Euphrates
-Front: What is the climate of Mesopotamia?
-Back: Semi-arid with hot summers and little rain
-Front: How did farmers deal with unpredictable floods?
-Back: They built irrigation canals to water crops
-Front: What resources did Mesopotamia lack?
-Back: Wood and metal
-Front: What were houses and walls in villages made of?
-Back: Mud
-Front: What did villagers trade their surplus grain for?
-Back: Building materials
-Front: What is the strategy to turn dreams into reality?
-Back: Acting on purpose
-Front: What are the four quadrants of importance and urgency?
-Back: 1) Important and urgent, 2) Important and not urgent, 3) Not important and urgent, 4) Not important or urgent
-Front: What are activities in Quadrant I?
-Back: Important and urgent activities done under the pressure of looming deadlines
-Front: What are activities in Quadrant II?
-Back: Important activities done without the pressure of looming deadlines
+    Back: Villagers traded surplus grain for building materials and started organizing specific jobs.
+    Front: What is the title of the chapter in the history book?
+    Back: Ancient 
+    
+    
+    
+    Front: What are the big idea questions for this chapter?
+    Back: How did farming deWhat are the two rivers that flow through Mesopotamia?What are the two rivers that flow through Mesopotamia?What are the two rivers that flow through Mesopotamia?What are the two rivers that flow through Mesopotamia?velop due to the river? What are other ways that the river helped people? Did villages tend to be near the river, and why?
+    Front: What are the two rivers that flow through Mesopotamia?
+    Back: Tigris and Euphrates
+    Front: What is the climate of Mesopotamia?
+    Back: Semi-arid with hot summers and little rain
+    Front: How did farmers deal with unpredictable floods?
+    Back: They built irrigation canals to water crops
+    Front: What resources did Mesopotamia lack?
+    Back: Wood and metal
+    Front: What were houses and walls in villages made of?
+    Back: Mud
+    Front: What did villagers trade their surplus grain for?
+    Back: Building materials
+    Front: What is the strategy to turn dreams into reality?
+    Back: Acting on purpose
+    Front: What are the four quadrants of importance and urgency?
+    Back: 1) Important and urgent, 2) Important and not urgent, 3) Not important and urgent, 4) Not important or urgent
+    Front: What are activities in Quadrant I?
+    Back: Important and urgent activities done under the pressure of looming deadlines
+    
+    
+    
+    
+    
+    
+    
+    Front: What are activities in Quadrant II?
+    Back: Important activities done without the pressure of looming deadlines
 
-"""
-    # print(gpt_response_ex)
+    """
+
     cards = split_cards(gpt_response_ex)
-
     data_list = {}
     for i in range(0, len(cards), 2):
-        front_key = cards[i]
-        back_value = cards[i + 1]
+        front_key = cards[i]['Front']
+        back_value = cards[i + 1]['Back']
         data_list[front_key] = back_value
 
-
-    return render_template("index.html", data=cards)
+    return render_template("index.html", data=data_list)
 
 
 if __name__ == '__main__':
